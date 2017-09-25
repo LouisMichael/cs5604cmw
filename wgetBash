@@ -1,0 +1,7 @@
+#!/bin/bash
+while read p; do
+    WEBPAGENAME="$p"
+    echo $WEBPAGENAME
+    RESULT="`wget -qO- $WEBPAGENAME`"
+    echo $WEBPAGENAME"	"$RESULT >> test.tsv
+done <$1
