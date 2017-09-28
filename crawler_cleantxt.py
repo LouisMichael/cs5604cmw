@@ -118,53 +118,59 @@ if __name__ == "__main__":
 
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.0; WOW64; rv:24.0) Gecko/20100101 Firefox/24.0'}
     
-    if not os.path.isfile(outpath+"summary.json"):
-        print("New summary file! ")
-    
-    
-    sumf = open(outpath+"summary.json", "a")
+    if not os.path.isfile(outpath+"summary.csv"):
+        with open(outpath+"summary.csv", "w") as sumf:
+            sumf.write("URL,Raw,Text\n")
+        print("New summary file! ")    
+        
+    sumf = open(outpath+"summary.csv", "ab")
               
+    ## test 
+
+    
     with open(sys.argv[1]) as f:
         for url in f:
             print(url)
-            try:
+            #try:
                 ## Type: dict
                 ## dict keys: html, title, text
-                webdict = getWebpageText(url)
-                if not webdict:
-                    print('No Text to be extracted from: ', url)
-                    continue
-                webhtml = webdict['html']
-                webtext = webdict['text']
-                webtitle = webdict['title']
-                
-                ## A few cleanning
-                webtext = webtext.replace("\n",".")
-                webtext_notabs = webtext.replace("\t"," ")
-                
-                # fn = webtitle.replace("/","_")
-                fn = url.split("://")[1]
-		
-		## valid filenames
-		valid_c = (' ','.','_')
-		"".join(c for c in fn if c.isalnum() or c in valid_c).rstrip()
-
-		"""
-                fn = fn.replace("/","_")
-                fn = fn.replace(" ","_")
-                fn = fn.replace("?","_")
-                fn = fn.replace(",","_")
-                fn = fn.replace("<","_")
-                fn = fn.replace(">","_")
-                fn = fn.replace(":","")
-                fn = fn.replace("\r","")
-                fn = fn.replace("\n","")
-		"""
-                
-                ## Write seperate text files for other teams
-                with open(outpath+fn+".txt","wb") as ftext:
-                    ftext.write(webtext.encode("utf-8"))
-                json.dump(webdict, sumf)
-            except Exception as e:
-                print(e)
-            print('\n')
+            webdict = getWebpageText(url)
+            if not webdict:
+                print('No Text to be extracted from: ', url)
+                continue
+            webhtml = webdict['html']
+            webtext = webdict['text']
+            webtitle = webdict['title']
+            
+            ## A few cleanning
+            webtext = webtext.replace("\n",".")
+            webtext = webtext.replace("\r",".")
+            webtext = webtext.replace(",",".")
+            
+            webhtml = webhtml.decode('utf-8')
+            webhtml = webhtml.replace("\n",".")
+            webhtml = webhtml.replace("\r",".")
+            webhtml = webhtml.replace(",",".")
+            
+            url = url.replace("\n","")
+            url = url.replace("\r","")
+            url = url.replace(",","")
+            # fn = webtitle.replace("/","_")
+            #fn = url.split("://")[1]
+    
+            ## valid filenames
+            #valid_c = (' ','.','_',"/",":")
+            #url = "".join(c for c in url if c.isalnum() or c in valid_c).rstrip()
+            
+            ## Write seperate text files for other teams
+            #with open(outpath+fn+".txt","wb") as ftext:
+            #    ftext.write(webtext.encode("utf-8"))
+            #json.dump(webdict, sumf)
+            
+            newline = url+","+webhtml+","+webtext+"\n"
+            sumf.write(newline.encode('utf8'))
+            #sumf.write(webhtml)
+            
+            #except Exception as e:
+            #    print(e)
+            print('-----------')
