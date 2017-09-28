@@ -128,8 +128,8 @@ if __name__ == "__main__":
         for url in f:
             print(url)
             try:
-                ## Type: list[dict]
-                ## Dict keys: html, title, text
+                ## Type: dict
+                ## dict keys: html, title, text
                 webdict = getWebpageText(url)
                 if not webdict:
                     print('No Text to be extracted from: ', url)
@@ -145,7 +145,7 @@ if __name__ == "__main__":
                 # fn = webtitle.replace("/","_")
                 fn = url.split("://")[1]
 		
-		## valid filenames using RE
+		## valid filenames
 		valid_c = (' ','.','_')
 		"".join(c for c in fn if c.isalnum() or c in valid_c).rstrip()
 
