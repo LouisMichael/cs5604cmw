@@ -143,8 +143,13 @@ if __name__ == "__main__":
                 webtext_notabs = webtext.replace("\t"," ")
                 
                 # fn = webtitle.replace("/","_")
-                ## Should be able to be done by RE
                 fn = url.split("://")[1]
+		
+		## valid filenames using RE
+		valid_c = (' ','.','_')
+		"".join(c for c in fn if c.isalnum() or c in valid_c).rstrip()
+
+		"""
                 fn = fn.replace("/","_")
                 fn = fn.replace(" ","_")
                 fn = fn.replace("?","_")
@@ -154,6 +159,7 @@ if __name__ == "__main__":
                 fn = fn.replace(":","")
                 fn = fn.replace("\r","")
                 fn = fn.replace("\n","")
+		"""
                 
                 ## Write seperate text files for other teams
                 with open(outpath+fn+".txt","wb") as ftext:
