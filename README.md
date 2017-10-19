@@ -1,6 +1,5 @@
 # cs5604cmw
 
-<<<<<<< HEAD
 ###Code developed for retrieving and processing webpages as is relevant for CS5604
 
 Further information is discussed in our ongoing paper which can be found [here](https://www.overleaf.com/11453323jhcyxdhjjsvj#/43271700/ "paper")
@@ -42,18 +41,4 @@ In order to put output information
 `scan 'cmwf17-test' , {COLUMNS => 'webpage:cleantext'}`
 
 making a table in HBase
-=======
-Code developed for retreaving and processing webpages as is relevent for CS5604
 
-
-Useful commands:
-
-hdfs dfs -put localfile /user/hadoop/hadoopfile
-
-scan 'tablename' , {COLUMNS => 'cfamily:cqualifier'}
-
-scan 'cmwf17-test' , {COLUMNS => 'webpage:cleantext'}
-
-making a table in hbase
-
->>>>>>> 7ef623a1f6741d64df7da03c3280ba74c23c639d
