@@ -25,6 +25,8 @@ urls - this directory contains lists of urls that are fed into our scripts to cl
 
 output_irma and vegas - The raw output of crawls for Hurricane Irma and The recent Las Vegas shooting. 
 
+`profanity_en.txt` - Our profanity blacklist, these are words and phrases that get eliminated when we clean for profanity
+
 `solar_urls.txt` - shorter URL list about the 2017 solar eclipse
 
 `urlFetchPython.py` - a simple python URL fetcher, does not do any cleaning
