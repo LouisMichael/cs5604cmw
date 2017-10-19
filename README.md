@@ -1,10 +1,10 @@
 # cs5604cmw
 
-###Code developed for retrieving and processing webpages as is relevant for CS5604
+### Code developed for retrieving and processing webpages as is relevant for CS5604
 
 Further information is discussed in our ongoing paper which can be found [here](https://www.overleaf.com/11453323jhcyxdhjjsvj#/43271700/ "paper")
 
-####File overview:
+#### File overview:
 cleanTextPy2 -  This folder is a first crack at getting our cleaning and fetching python to run the meat of the folder is `crawler_cleantextPy2.py` which is the a python script that takes in a list of urls and scraps and cleans their html to produce a csv or relevant information  
 
 cleanTextPy3 -  This is currently the most up to date version of our python script and it is what should be examined and expanded on
@@ -30,7 +30,7 @@ output_irma and vegas - The raw output of crawls for Hurricane Irma and The rece
 `urlFetchPython.py` - a simple python URL fetcher, does not do any cleaning
 
 `wgetBash` -  a bash script to fetch URLs this has been replaced with a python script
-####Useful commands:
+#### Useful commands:
 
 In order to put output information 
 
