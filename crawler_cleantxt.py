@@ -54,7 +54,7 @@ Functions to get info from meta names:
 author/publisher
 organization-name (copyright)
 create-time
-
+keywords
 """
 def extractMetaName(parsedHTML):
     metas = {
@@ -83,92 +83,50 @@ def extractMetaName(parsedHTML):
         httpEquiv = meta.get('http-equiv', '').lower()
         metaProperty = meta.get('property', '').lower()
         
+        conditions = (
+        'pubdate' == metaName,
+        'publishdate' == metaName,
+        'timestamp' == metaName,
+        'dc.date.issued' == metaName,
+        'article:published_time' == metaProperty,
+        'article:published_time' == metaName,
+        'date' == metaName, 
+        'bt:pubdate' == metaProperty,
+        'sailthru.date' == metaName,
+        'article.published' == metaName,
+        'published-date' == metaName,
+        'article.created' == metaName,
+        'article_date_original' == metaName,
+        'cxenseparse:recs:publishtime' == metaName,
+        'date_published' == metaName,
+        'datepublished' == itemProp,
+        'datecreated' == itemProp,
+        'date' == httpEquiv,
+        )
+
         #<meta name="pubdate" content="2015-11-26T07:11:02Z" >
-        if 'pubdate' == metaName:
-            metas['publishDate'] = meta['content'].strip()
-            
-
-        #<meta name='publishdate' content='201511261006'/>
-        elif 'publishdate' == metaName:
-            metas['publishDate'] = meta['content'].strip()
-            
-
+        #<meta name='publishdate' content='201511261006'/>            
         #<meta name="timestamp"  data-type="date" content="2015-11-25 22:40:25" />
-        elif 'timestamp' == metaName:
-            metas['publishDate'] = meta['content'].strip()
-            
-
-        #<meta name="DC.date.issued" content="2015-11-26">
-        elif 'dc.date.issued' == metaName:
-            metas['publishDate'] = meta['content'].strip()
-            
-
+        #<meta name="DC.date.issued" content="2015-11-26">           
         #<meta property="article:published_time"  content="2015-11-25" />
-        elif 'article:published_time' == metaProperty:
-            metas['publishDate'] = meta['content'].strip()
-            
-        elif 'article:published_time' == metaName:
-            metas['publishDate'] = meta['content'].strip()
-            
-            #<meta name="Date" content="2015-11-26" />
-        elif 'date' == metaName:
-            metas['publishDate'] = meta['content'].strip()
-            
-
+        #<meta name="Date" content="2015-11-26" />
         #<meta property="bt:pubDate" content="2015-11-26T00:10:33+00:00">
-        elif 'bt:pubdate' == metaProperty:
-            metas['publishDate'] = meta['content'].strip()
-            
-            #<meta name="sailthru.date" content="2015-11-25T19:56:04+0000" />
-        elif 'sailthru.date' == metaName:
-            metas['publishDate'] = meta['content'].strip()
-            
-
+        #<meta name="sailthru.date" content="2015-11-25T19:56:04+0000" />
         #<meta name="article.published" content="2015-11-26T11:53:00.000Z" />
-        elif 'article.published' == metaName:
-            metas['publishDate'] = meta['content'].strip()
-            
-
         #<meta name="published-date" content="2015-11-26T11:53:00.000Z" />
-        elif 'published-date' == metaName:
-            metas['publishDate'] = meta['content'].strip()
-            
-
         #<meta name="article.created" content="2015-11-26T11:53:00.000Z" />
-        elif 'article.created' == metaName:
-            metas['publishDate'] = meta['content'].strip()
-            
-
         #<meta name="article_date_original" content="Thursday, November 26, 2015,  6:42 AM" />
-        elif 'article_date_original' == metaName:
-            metas['publishDate'] = meta['content'].strip()
-            
-
         #<meta name="cXenseParse:recs:publishtime" content="2015-11-26T14:42Z"/>
-        elif 'cxenseparse:recs:publishtime' == metaName:
-            metas['publishDate'] = meta['content'].strip()
-            
-
         #<meta name="DATE_PUBLISHED" content="11/24/2015 01:05AM" />
-        elif 'date_published' == metaName:
-            metas['publishDate'] = meta['content'].strip()
-            
-
-
         #<meta itemprop="datePublished" content="2015-11-26T11:53:00.000Z" />
-        elif 'datepublished' == itemProp:
-            metas['publishDate'] = meta['content'].strip()
-            
-
         #<meta itemprop="datecreated" content="2015-11-26T11:53:00.000Z" />
-        elif 'datecreated' == itemProp:
+        #<meta http-equiv="data" content="10:27:15 AM Thursday, November 26, 2015">
+
+        if any(conditions):
             metas['publishDate'] = meta['content'].strip()
             
 
-        #<meta http-equiv="data" content="10:27:15 AM Thursday, November 26, 2015">
-        elif 'date' == httpEquiv:
-            metas['publishDate'] = meta['content'].strip()
-            
+      
     
     return metas
     
