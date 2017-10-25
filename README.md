@@ -71,10 +71,10 @@ metadata   collection-name
 The two columns will be supported base on the URL source
 
 ##### To be updated:
-webpage   domain-location 
+webpage   domain-location   
 Use GeoIP to generate a bounding box at country level
 
 ##### If anyone wants them: 
-clean-webpage  tokens 
-clean-webpage  remove-stop 
-clean-webpage  lemmatize 
+clean-webpage  tokens   
+clean-webpage  remove-stop   
+clean-webpage  lemmatize   
