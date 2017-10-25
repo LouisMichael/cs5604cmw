@@ -46,7 +46,7 @@ making a table in HBase
 
 #### Current crawler_cleantext.py
 
-# Supported:
+##### Supported:
 metadata   doc-type  
 
 webpage   html  
@@ -65,16 +65,16 @@ clean-webpage   clean-text
 clean-webpage   clean-text-profanity  
 clean-webpage   real-world-events  
 
-#  To be supported:
+#####  To be supported:
 metadata   collection-id  
 metadata   collection-name  
 The two columns will be supported base on the URL source
 
-# To be updated:
+##### To be updated:
 webpage   domain-location 
 Use GeoIP to generate a bounding box at country level
 
-# If anyone wants them: 
+##### If anyone wants them: 
 clean-webpage  tokens 
 clean-webpage  remove-stop 
 clean-webpage  lemmatize 
