@@ -61,9 +61,9 @@ webpage   domain-location
 webpage   organization-name  
 webpage   fetch-time  
 
-clean-webpage   clean-text 
-clean-webpage   clean-text-profanity  
-clean-webpage   real-world-events  
+clean-webpage   clean-text   
+clean-webpage   clean-text-profanity    
+clean-webpage   real-world-events    
 
 #####  To be supported:
 metadata   collection-id  
