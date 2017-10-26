@@ -326,8 +326,6 @@ if __name__ == "__main__":
                 lan = [str(i) for i in detect_langs(webtext)]
                 lan = ",".join(lan)
                 
-                ## clean-text-profanity
-                webtext_profanity = cleanTextProfanity(webtext)
                 
                 ## A few cleaning
                 webtext = webtext.replace("\n",".")
@@ -344,6 +342,9 @@ if __name__ == "__main__":
                 url = url.replace("\t","")
                 
                 webtitle = webtitle.replace("\t",".")
+
+		## clean-text-profanity
+                webtext_profanity = cleanTextProfanity(webtext)
 
                 ## Our key: URL+timestamp
                 theKey = url+"-"+ts
