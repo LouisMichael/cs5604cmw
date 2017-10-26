@@ -81,6 +81,6 @@ clean-webpage  lemmatize
 clean-webpage   sner-people  
 clean-webpage   sner-organization  
 clean-webpage   sner-location  
-clean-webpage  POS 
-If anyone wants them, they will be supported by libraries: nltk, NER
+clean-webpage  POS   
+If anyone wants them, they will be supported by libraries: nltk, NER  
 Not sure about POS for now
