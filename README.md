@@ -44,7 +44,7 @@ In order to put output information
 
 making a table in HBase
 
-#### Current crawler_cleantext.py
+#### Current crawler_cleantext.py 10/24/17
 
 ##### Supported:
 metadata   doc-type  
@@ -62,13 +62,13 @@ webpage   organization-name
 webpage   fetch-time  
 
 clean-webpage   clean-text   
-clean-webpage   clean-text-profanity    
-clean-webpage   real-world-events    
+clean-webpage   clean-text-profanity   
 
 #####  To be supported:
 metadata   collection-id  
-metadata   collection-name  
-The two columns will be supported base on the URL source
+metadata   collection-name   
+clean-webpage   real-world-events    
+The three columns will be supported base on the URL source
 
 ##### To be updated:
 webpage   domain-location   
@@ -78,3 +78,9 @@ Use GeoIP to generate a bounding box at country level
 clean-webpage  tokens   
 clean-webpage  remove-stop   
 clean-webpage  lemmatize   
+clean-webpage   sner-people  
+clean-webpage   sner-organization  
+clean-webpage   sner-location  
+clean-webpage  POS 
+If anyone wants them, they will be supported by libraries: nltk, NER
+Not sure about POS for now
