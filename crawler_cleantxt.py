@@ -155,7 +155,6 @@ title
 def visible(element):
     if element.parent.name in ['style', 'script', '[document]', 'head', 'iframe']:
         return False
-#    if element
     return True
 
 
@@ -170,10 +169,7 @@ def getTxt(htmlPage):
     if soup.title:
         if soup.title.string:
             title = soup.title.string
-    
 
-    
-    
     text_nodes = soup.findAll(text=lambda text: not isinstance(text, Comment))
     #text_nodes = soup.findAll(text=True)
     #text_nodes_noLinks = soup.findAll(text=True)
@@ -258,7 +254,7 @@ if __name__ == "__main__":
     webpage_c = ["url", "html", "language", "title", "author/publisher","organization-name", "create-time", "domain-name" , "domain-location", "sub-urls", "fetch-time"]
     cleanwebpage_c = ["clean-text", "clean-text-profanity", "keywords"]
     
-    output_c = ["url-timestamp"]+metadata_c + webpage_c + cleanwebpage_c 
+    output_c = ["url-timestamp"] + metadata_c + webpage_c + cleanwebpage_c 
 
     """
     if not os.path.isfile(metadata_f):
