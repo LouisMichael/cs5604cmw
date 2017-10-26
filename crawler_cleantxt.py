@@ -375,8 +375,8 @@ if __name__ == "__main__":
                 newline_list = [theKey]
                 
                 newline_m = ["webpage"]
-                newline_w = [theKey, url, webhtml, lan, webtitle, webAuthor, webOrganization, webCreatedate, domain_name, domain_location, sub_urls, ts]
-                newline_c = [theKey, webtext, webtext_profanity, webKeywords]
+                newline_w = [url, webhtml, lan, webtitle, webAuthor, webOrganization, webCreatedate, domain_name, domain_location, sub_urls, ts]
+                newline_c = [webtext, webtext_profanity, webKeywords]
                 
                 newline_list += newline_m + newline_w + newline_c
                 
