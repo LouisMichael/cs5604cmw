@@ -50,16 +50,16 @@ making a table in HBase
 metadata   doc-type  
 
 webpage   html  
-webpage   language  
+webpage   language   [language:confidence, language:confidence]
 webpage   url  
 webpage   title  
 webpage   author/publisher  
-webpage   sub-urls  
+webpage   sub-urls   [url;url]
 webpage   create-time  
 webpage   domain-name  
 webpage   domain-location  
 webpage   organization-name  
-webpage   fetch-time  
+webpage   fetch-time  [UnixTime]
 
 clean-webpage   clean-text   
 clean-webpage   clean-text-profanity   
