@@ -28,7 +28,7 @@ Input: A text file contains URLs
 
 Output: 
 One tsv file for each column family
-		
+
 Usage: python crawler_cleantxt.py <inputURLFile>
 """
 
@@ -153,8 +153,9 @@ clean text
 title
 """
 def visible(element):
-    if element.parent.name in ['style', 'script', '[document]', 'head']:
+    if element.parent.name in ['style', 'script', '[document]', 'head', 'iframe']:
         return False
+#    if element
     return True
 
 
@@ -172,9 +173,12 @@ def getTxt(htmlPage):
     
 
     
-    text_nodes = soup.findAll(text=True)
+    
+    text_nodes = soup.findAll(text=lambda text: not isinstance(text, Comment))
+    #text_nodes = soup.findAll(text=True)
     #text_nodes_noLinks = soup.findAll(text=True)
     visible_text = filter(visible, text_nodes)
+    
     text = "\n".join(visible_text)
     #textSents = getSentences(text)
     #text = "\n".join(textSents)
@@ -243,16 +247,20 @@ if __name__ == "__main__":
 
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.0; WOW64; rv:24.0) Gecko/20100101 Firefox/24.0'}
 
-
+    """
     metadata_f = outpath+"cmwf17test_metadata.tsv"
     webpage_f = outpath+"cmwf17test_webpage.tsv"
     cleanwebpage_f = outpath+"cmwf17test_cleanwebpage.tsv"
+    """
+    output_f = outpath+"cmwf17test.tsv"
     
     metadata_c = ["url-timestamp", "doc-type"]
     webpage_c = ["url-timestamp", "url", "html", "language", "title", "author/publisher","organization-name", "create-time", "domain-name" , "domain-location", "sub-urls", "fetch-time"]
     cleanwebpage_c = ["url-timestamp", "clean-text", "clean-text-profanity", "keywords"]
-
     
+    output_c = metadata_c + webpage_c + cleanwebpage_c 
+
+    """
     if not os.path.isfile(metadata_f):
         with open(metadata_f, "w") as sumf:
             sumf.write("\t".join(metadata_c)+"\n")
@@ -266,11 +274,15 @@ if __name__ == "__main__":
             sumf.write("\t".join(cleanwebpage_c)+"\n")
         #print("New tsv file! ")    
 
-        
-
     sumf_metadata = open(metadata_f, "ab")
     sumf_webpage = open(webpage_f, "ab")       
     sumf_cleanwebpage = open(cleanwebpage_f, "ab")
+    """
+    if not os.path.isfile(output_f):
+        with open(output_f, "w") as sumf:
+            sumf.write("\t".join(output_c)+"\n")
+        #print("New tsv file! ")    
+    sumf = open(output_f, "ab")
               
     ## test 
     # url = "https://www.washingtonpost.com/solar-eclipse-2017/"
@@ -326,7 +338,6 @@ if __name__ == "__main__":
                 lan = [str(i) for i in detect_langs(webtext)]
                 lan = ",".join(lan)
                 
-                
                 ## A few cleaning
                 webtext = webtext.replace("\n",".")
                 webtext = webtext.replace("\r",".")
@@ -342,14 +353,16 @@ if __name__ == "__main__":
                 url = url.replace("\t","")
                 
                 webtitle = webtitle.replace("\t",".")
-
-		## clean-text-profanity
+                
+                ## clean-text-profanity
                 webtext_profanity = cleanTextProfanity(webtext)
+                
 
                 ## Our key: URL+timestamp
                 theKey = url+"-"+ts
                 
                 ## Write tsv files
+                """
                 newline_list = [theKey,"webpage"]
                 newline = "\t".join(newline_list)+"\n"
                 sumf_metadata.write(newline.encode('utf8'))
@@ -361,6 +374,18 @@ if __name__ == "__main__":
                 newline_list = [theKey, webtext, webtext_profanity, webKeywords]
                 newline = "\t".join(newline_list)+"\n"
                 sumf_cleanwebpage.write(newline.encode('utf8'))
+                """
+                
+                newline_list = [theKey]
+                
+                newline_m = ["webpage"]
+                newline_w = [theKey, url, webhtml, lan, webtitle, webAuthor, webOrganization, webCreatedate, domain_name, domain_location, sub_urls, ts]
+                newline_c = [theKey, webtext, webtext_profanity, webKeywords]
+                
+                newline_list += newline_m + newline_w + newline_c
+                
+                newline = "\t".join(newline_list)+"\n"
+                sumf.write(newline.encode('utf8'))
                 
             except Exception as e:
                 print(e)
