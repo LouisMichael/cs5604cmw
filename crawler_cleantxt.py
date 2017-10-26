@@ -254,11 +254,11 @@ if __name__ == "__main__":
     """
     output_f = outpath+"cmwf17test.tsv"
     
-    metadata_c = ["url-timestamp", "doc-type"]
-    webpage_c = ["url-timestamp", "url", "html", "language", "title", "author/publisher","organization-name", "create-time", "domain-name" , "domain-location", "sub-urls", "fetch-time"]
-    cleanwebpage_c = ["url-timestamp", "clean-text", "clean-text-profanity", "keywords"]
+    metadata_c = ["doc-type"]
+    webpage_c = ["url", "html", "language", "title", "author/publisher","organization-name", "create-time", "domain-name" , "domain-location", "sub-urls", "fetch-time"]
+    cleanwebpage_c = ["clean-text", "clean-text-profanity", "keywords"]
     
-    output_c = metadata_c + webpage_c + cleanwebpage_c 
+    output_c = ["url-timestamp"]+metadata_c + webpage_c + cleanwebpage_c 
 
     """
     if not os.path.isfile(metadata_f):
