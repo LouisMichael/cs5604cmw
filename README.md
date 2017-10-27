@@ -44,7 +44,7 @@ In order to put output information
 
 making a table in HBase
 
-#### Current crawler_cleantext.py 10/24/17
+### Current crawler_cleantext.py 10/26/17
 
 ##### Supported:
 metadata   doc-type  
@@ -64,26 +64,26 @@ webpage   fetch-time  [UnixTime]
 clean-webpage   clean-text   
 clean-webpage   clean-text-profanity   
 
+
+##### Supported (crawler_cleantext_advanced.py): 
+clean-webpage  tokens [tokenized and stopwords removed]   
+clean-webpage  lemmatize    [stemming and lemmatization using tokens]  
+clean-webpage   sner-people  
+clean-webpage   sner-organization  
+clean-webpage   sner-location  
+clean-webpage  POS   
+These features are supported by library: nltk  
+
 #####  To be supported:
 metadata   collection-id  
 metadata   collection-name   
 clean-webpage   real-world-events    
 The three columns will be supported base on the URL source
 
-##### To be updated:
+##### To be updated if needed:
 webpage   domain-location   
 Use GeoIP to generate a bounding box at country level
-
-##### If anyone wants them: 
-clean-webpage  tokens   
-clean-webpage  remove-stop   
-clean-webpage  lemmatize   
-clean-webpage   sner-people  
-clean-webpage   sner-organization  
-clean-webpage   sner-location  
-clean-webpage  POS   
-If anyone wants them, they will be supported by libraries: nltk, NER  
-Not sure about POS for now
+Currently we will leave locations in sner-location to be processed
 
 ### Current write to hbase bash command
 hbase org.apache.hadoop.hbase.mapreduce.ImportTsv -Dimporttsv.separator='   ' -Dimporttsv.columns="HBASE_ROW_KEY,metadata:doc-type,webpage:url,webpage:html,webpage:language,webpage:title,webpage:author/publisher,webpage:organization-name,webpage:create-time,webpage:domain-name,webpage:domain-location,webpage:sub-urls,webpage:fetch-time,cleanwebpage:clean-text,cleanwebpage:clean-text-profanity,cleanwebpage:keywords,cleanwebpage:tokens,cleanwebpage:lemmatized,cleanwebpage:POS,cleanwebpage:sner-people,cleanwebpage:sner-organization,cleanwebpage:sner-location" table_name cmwf17test.tsv
