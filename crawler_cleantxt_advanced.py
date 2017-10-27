@@ -454,6 +454,8 @@ if __name__ == "__main__":
                 url = url.replace("\r","")
                 url = url.replace("\t","")
                 
+                webtitle = webtitle.replace("\n",".")
+                webtitle = webtitle.replace("\r",".")
                 webtitle = webtitle.replace("\t",".")
                 
                 ## clean-text-profanity
