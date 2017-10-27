@@ -67,7 +67,7 @@ clean-webpage   clean-text-profanity
 
 ##### Supported (crawler_cleantext_advanced.py): 
 clean-webpage  tokens [tokenized and stopwords removed]   
-clean-webpage  lemmatize    [stemming and lemmatization using tokens]  
+clean-webpage  lemmatize    [stemmed and lemmatized using tokens]  
 clean-webpage   sner-people  
 clean-webpage   sner-organization  
 clean-webpage   sner-location  
