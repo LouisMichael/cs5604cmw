@@ -83,7 +83,8 @@ The three columns will be supported base on the URL source
 ##### To be updated if needed:
 webpage   domain-location   
 Use GeoIP to generate a bounding box at country level   
-Currently we will leave locations in sner-location to be processed
+Or recognize the location of copyright organization   
+Or we will leave locations in sner-location to be processed
 
 ### Current write to hbase bash command
 hbase org.apache.hadoop.hbase.mapreduce.ImportTsv -Dimporttsv.separator='   ' -Dimporttsv.columns="HBASE_ROW_KEY,metadata:doc-type,webpage:url,webpage:html,webpage:language,webpage:title,webpage:author/publisher,webpage:organization-name,webpage:create-time,webpage:domain-name,webpage:domain-location,webpage:sub-urls,webpage:fetch-time,cleanwebpage:clean-text,cleanwebpage:clean-text-profanity,cleanwebpage:keywords,cleanwebpage:tokens,cleanwebpage:lemmatized,cleanwebpage:POS,cleanwebpage:sner-people,cleanwebpage:sner-organization,cleanwebpage:sner-location" table_name cmwf17test.tsv
