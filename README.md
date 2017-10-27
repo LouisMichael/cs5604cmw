@@ -82,7 +82,7 @@ The three columns will be supported base on the URL source
 
 ##### To be updated if needed:
 webpage   domain-location   
-Use GeoIP to generate a bounding box at country level
+Use GeoIP to generate a bounding box at country level   
 Currently we will leave locations in sner-location to be processed
 
 ### Current write to hbase bash command
