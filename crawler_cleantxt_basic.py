@@ -15,6 +15,9 @@ from langdetect import detect_langs
 ## for python2, use:
 from urlparse import urlparse
 
+## for config
+import crawler_cleantxt_config as config
+
 
 
 
@@ -240,6 +243,9 @@ main function
 if __name__ == "__main__":
 
     outpath = "output/"
+    
+    col_event = config.COL_EVENT
+    col_id = config.COL_ID[col_event]
 
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.0; WOW64; rv:24.0) Gecko/20100101 Firefox/24.0'}
 
@@ -250,9 +256,9 @@ if __name__ == "__main__":
     """
     output_f = outpath+"cmwf17test.tsv"
     
-    metadata_c = ["doc-type"]
+    metadata_c = ["doc-type", "collectoion-id", "collection-name"]
     webpage_c = ["url", "html", "language", "title", "author/publisher","organization-name", "create-time", "domain-name" , "domain-location", "sub-urls", "fetch-time"]
-    cleanwebpage_c = ["clean-text", "clean-text-profanity", "keywords"]
+    cleanwebpage_c = ["clean-text", "clean-text-profanity", "keywords", "real-world-events"]
     
     output_c = ["url-timestamp"] + metadata_c + webpage_c + cleanwebpage_c 
 
@@ -376,9 +382,9 @@ if __name__ == "__main__":
                 
                 newline_list = [theKey]
                 
-                newline_m = ["webpage"]
+                newline_m = ["webpage", col_id, col_event]
                 newline_w = [theKey, url, webhtml, lan, webtitle, webAuthor, webOrganization, webCreatedate, domain_name, domain_location, sub_urls, ts]
-                newline_c = [theKey, webtext, webtext_profanity, webKeywords]
+                newline_c = [theKey, webtext, webtext_profanity, webKeywords, col_event]
                 
                 newline_list += newline_m + newline_w + newline_c
                 
