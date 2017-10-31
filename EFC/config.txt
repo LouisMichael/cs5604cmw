@@ -1,0 +1,13 @@
+allVocab : 0
+pagesLimit : 50
+combineScore : 1
+restrictedCrawl : 0
+noK : 10
+pageTh : 0.5
+urlsTh : 0.1
+bufferLen : 100
+minLocTermFreq : 20
+minNumDoc : 2
+minCollFreq : 10
+error : 0.15
+roundPrec : 3
