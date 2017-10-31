@@ -48,6 +48,8 @@ making a table in HBase
 
 ##### Supported:
 metadata   doc-type  
+metadata   collection-id  
+metadata   collection-name 
 
 webpage   html  
 webpage   language   [language:confidence, language:confidence]   
@@ -62,10 +64,10 @@ webpage   organization-name
 webpage   fetch-time  [UnixTime]  
 
 clean-webpage   clean-text   
-clean-webpage   clean-text-profanity   
+clean-webpage   clean-text-profanity  
+clean-webpage   real-world-events [same as collection-name for EFC URLs]
 
-
-##### Supported (crawler_cleantext_advanced.py): 
+##### More Supported (crawler_cleantext_advanced.py): 
 clean-webpage  tokens [tokenized and stopwords removed]   
 clean-webpage  lemmatized    [stemmed and lemmatized using tokens]  
 clean-webpage   sner-people  
@@ -74,11 +76,6 @@ clean-webpage   sner-location
 clean-webpage  POS   
 These features are supported by library: nltk  
 
-#####  To be supported:
-metadata   collection-id  
-metadata   collection-name   
-clean-webpage   real-world-events    
-The three columns will be supported base on the URL source
 
 ##### To be updated if needed:
 webpage   domain-location   
