@@ -389,7 +389,7 @@ if __name__ == "__main__":
 
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.0; WOW64; rv:24.0) Gecko/20100101 Firefox/24.0'}
     
-    stopwordsList = stopwords.words('english')
+    stopwordsList = stopwords.words('english') + ["profanity"]
     
     pltfrm = platformDetector()
 
@@ -456,10 +456,14 @@ if __name__ == "__main__":
             webtext = webdict['text']
             webtitle = webdict['title']
             webhtml_parsed = BeautifulSoup(webhtml, 'lxml' )
+
             print("Title: "+webtitle)
-            
+
+            ## clean-text-profanity to process
+            webtext_profanity = cleanTextProfanity(webtext)
+
             ## Tokenization and remove stopwords
-            webtokens = getTokens(webtext)
+            webtokens = getTokens(webtext_profanity)
             ## POS, this is tricky when encode = utf8
             try:
                 webPOS = getPOS(webtokens)
@@ -529,8 +533,9 @@ if __name__ == "__main__":
             webtitle = webtitle.replace("\r",".")
             webtitle = webtitle.replace("\t",".")
             
-            ## clean-text-profanity
+            ## clean-text-profanity to write
             webtext_profanity = cleanTextProfanity(webtext)
+
             
 
             ## Our key: URL+timestamp
