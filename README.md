@@ -61,14 +61,14 @@ webpage   create-time
 webpage   domain-name  
 webpage   domain-location  
 webpage   organization-name  
-webpage   fetch-time  [UnixTime]  
-webpage   mime-type [image/jpg, image/png, html/txt,...]
-webpage  status-code [0200, 0404, 0502, 1000, ...]
+webpage   fetch-time  [UnixTime]    
+webpage   mime-type [image/jpg, image/png, html/txt,...]    
+webpage  status-code [0200, 0404, 0502, 1000, ...]    
 *See the config file for our self-defined status codes*
 
 clean-webpage   clean-text   
 clean-webpage   clean-text-profanity  
-clean-webpage   real-world-events [same as collection-name for EFC URLs]
+clean-webpage   real-world-events [same as collection-name for EFC URLs]   
 clean-webpage  tokens [tokenized and stopwords removed]   
 clean-webpage  lemmatized    [stemmed and lemmatized using tokens]  
 clean-webpage   sner-people  
