@@ -59,6 +59,9 @@ Output:
 One tsv file for each column family
 		
 Usage: python crawler_cleantxt.py <inputURLFile>
+
+Always remember to change the config file when crawling a new file. 
+Especially the COL_EVENT which represents the collection-name.
 """
 
 
@@ -106,15 +109,21 @@ def getPOS(allTokens):
 
 """
 Input: tokenized list
-Output: stemmed and lemmatized tokens
+Output: stemmed tokens
+"""
+def getStemmed(allTokens):
+    stemmer = PorterStemmer()
+    allTokens_stem = [stemmer.stem(word) for word in allTokens]
+    return allTokens_stem
+
+"""
+Input: tokenized list
+Output: lemmatized tokens
 """
 def getLemmatized(allTokens):
-    stemmer = PorterStemmer()
     wordnet_lemmatizer = WordNetLemmatizer()
-    allTokens_stem = [stemmer.stem(word) for word in allTokens]
-    allTokens_lemmatize = [wordnet_lemmatizer.lemmatize(word) for word in allTokens_stem]
-    return allTokens_lemmatize
-    
+    allTokens_lemmatize = [wordnet_lemmatizer.lemmatize(word) for word in allTokens]
+    return allTokens_lemmatize    
 
 """
 Input: 
@@ -394,7 +403,7 @@ if __name__ == "__main__":
     
     metadata_c = ["doc-type", "collectoion-id", "collection-name"]
     webpage_c = ["url", "html", "language", "title", "author/publisher","organization-name", "create-time", "domain-name" , "domain-location", "sub-urls", "fetch-time", "mime-type", "status-code"]
-    cleanwebpage_c = ["clean-text", "clean-text-profanity", "keywords", "tokens", "lemmatized","POS", "sner-people", "sner-organization", "sner-location", "real-world-events"]
+    cleanwebpage_c = ["clean-text", "clean-text-profanity", "keywords", "tokens", "stemmed", "lemmatized","POS", "sner-people", "sner-organization", "sner-location", "real-world-events"]
     
     output_c = ["url-timestamp"] + metadata_c + webpage_c + cleanwebpage_c 
 
@@ -457,6 +466,7 @@ if __name__ == "__main__":
             except:
                 webPOS = [""]
             ## Stemming and lemmatization
+            webstem = getStemmed(webtokens)
             weblemma = getLemmatized(webtokens)
             ## NERs
             nerDict = getNERs(webtokens, pltfrm)
@@ -465,6 +475,7 @@ if __name__ == "__main__":
             nerLocation = ",".join(nerDict['location'])
             ## list to string
             webtokens = ",".join(webtokens)
+            webstem = ",".join(webstem)
             weblemma = ",".join(weblemma)
             webPOS = ",".join(webPOS)
             
@@ -544,7 +555,7 @@ if __name__ == "__main__":
             
             newline_m = ["webpage", col_id, col_event]
             newline_w = [url, webhtml, lan, webtitle, webAuthor, webOrganization, webCreatedate, domain_name, domain_location, sub_urls, ts, webtype, st_code]
-            newline_c = [webtext, webtext_profanity, webKeywords, webtokens, weblemma, webPOS, nerPerson, nerOrg, nerLocation, col_event]
+            newline_c = [webtext, webtext_profanity, webKeywords, webtokens, webstem, weblemma, webPOS, nerPerson, nerOrg, nerLocation, col_event]
             
             newline_list += newline_m + newline_w + newline_c
             
