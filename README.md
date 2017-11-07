@@ -59,7 +59,7 @@ metadata   collection-name
 
 webpage   html  
 webpage   language   [language:confidence, language:confidence]   
-webpage   url  [og:url if exists]
+webpage   url  [og:url if exists]    
 webpage   title  
 webpage   author/publisher  
 webpage   sub-urls   [url;url]  
