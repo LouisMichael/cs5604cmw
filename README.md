@@ -69,12 +69,14 @@ webpage  status-code [0200, 0404, 0502, 1000, ...]
 clean-webpage   clean-text   
 clean-webpage   clean-text-profanity  
 clean-webpage   real-world-events [same as collection-name for EFC URLs]   
-clean-webpage  tokens [tokenized and stopwords removed]   
-clean-webpage  lemmatized    [stemmed and lemmatized using tokens]  
+clean-webpage  tokens [tokenized and stopwords removed without profanity] 
+clean-webpage stemmed [stemmed using tokens]   
+clean-webpage  lemmatized  [lemmatized using tokens]  
 clean-webpage   sner-people  
 clean-webpage   sner-organization  
 clean-webpage   sner-location  
 clean-webpage  POS   
+clean-webpage  keywords [keywords in meta tags, could be inaccurate]   
 *These features starting from "tokens" are supported by library: nltk*  
 
 *Where to find collection-id:
