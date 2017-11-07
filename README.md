@@ -86,7 +86,7 @@ clean-webpage  POS
 clean-webpage  keywords [keywords in meta tags, could be inaccurate]   
 
 *These features starting from "tokens" are supported by library: nltk    
-stopwords are the default english stopwords supported by nltk. To handle relative high frequency of word "profanity" in clean-text-profanity, "profanity" is added to our stopwords list. *
+stopwords are the default english stopwords supported by nltk. To handle relatively high frequency of word "profanity" in clean-text-profanity, "profanity" is added to our stopwords list. *
 
 *Where to find collection-id:
 http://hadoop.dlib.vt.edu:81/twitter/
