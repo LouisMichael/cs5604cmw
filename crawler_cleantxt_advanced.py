@@ -4,16 +4,20 @@ from bs4 import BeautifulSoup, Comment
 import sys
 import os
 import codecs
+import urllib
+
 ## for timestamp
 import time
 ## for language list
 from langdetect import detect_langs
 
 ## extract domain name
-## for python3, use:
-#from urllib.parse import urlparse
-## for python2, use:
-from urlparse import urlparse
+if sys.version_info[0] == 3:
+    ## for python3, use:  
+    from urllib.parse import urlparse
+else:
+    ## for python2, use:
+    from urlparse import urlparse
 
 ## For:
 ## tokenization
@@ -35,6 +39,12 @@ from nltk.tag.stanford import StanfordNERTagger
 ## for config
 import crawler_cleantxt_config as config
 
+## for platform detecting
+import platform
+
+## To ignore warnings
+import warnings
+warnings.filterwarnings("ignore")
 
 
 """
@@ -110,14 +120,17 @@ def getLemmatized(allTokens):
 Input: 
 Output: list of NERs
 """
-def getNERs(allTokens):
+def getNERs(allTokens, pltfrm = "linux"):
     nerDict = {
     "person":"",
     "org":"",
     "location":""
     }
     nerpath = "nerClassifier/"
-    st = StanfordNERTagger(nerpath+"english.all.3class.distsim.crf.ser.gz", "stanford-ner-2017-06-09\stanford-ner.jar")
+    if pltfrm == "windows":
+        st = StanfordNERTagger(nerpath+"english.all.3class.distsim.crf.ser.gz", "stanford-ner-2017-06-09//stanford-ner.jar")
+    else: 
+        st = StanfordNERTagger(nerpath+"english.all.3class.distsim.crf.ser.gz", "stanford-ner-2017-06-09/stanford-ner.jar")
     tags = st.tag(allTokens)
     #tags_ners = [i for i,j in tags if j != 'O']
     nerDict['person'] = [i for i,j in tags if j == 'PERSON']
@@ -148,12 +161,13 @@ organization-name (copyright)
 create-time
 keywords
 """
-def extractMetaName(parsedHTML):
+def extractMetaName(parsedHTML, url):
     metas = {
     "author":"",
     "copyright":"",
     "publishDate":"",
     "keywords":"",
+    "url":url,
     }
     for meta in parsedHTML.find_all("meta"):
         metaName = meta.get('name', '').lower()     
@@ -167,6 +181,9 @@ def extractMetaName(parsedHTML):
             
         if 'keywords' == metaName:
             metas['keywords'] = meta['content'].strip()
+            
+        if "og:url" == metaName:
+            metas['url'] = meta['content'].strip()
                         
             
         ## Various ways to extract publish date
@@ -296,24 +313,28 @@ def getWebpageText(url, r = ""):
     "html":"",
     "text":"",
     "title":"",
+    "type":"",
     }
-    if r and r.status_code == requests.codes.ok:
+    #if r and r.status_code == requests.codes.ok:
         #ct = r.headers['Content-Type']
-        ct = r.headers.get('Content-Type','')
-        if ct.find('text/html')!= -1:
-            page = r.content
-            text = extractTextFromHTML(page)
-            if text:
-                text['html']= page
-            else:
-                print('No Text to be extracted from: ', url)
+    ct = r.headers.get('Content-Type','')
+    if ct.find('text/html')!= -1:
+        page = r.content
+        text = extractTextFromHTML(page)
+        text["type"] = ct
+        if text:
+            text['html']= page
         else:
-            #text = {}
-            print('Content-Type is not text/html', ct," - ", url) 
-            text = ""
+            print('No Text to be extracted from: ', url)
+            text["text"] = "2000"
     else:
-        print('Could not download:', url)
-        text = ""
+        #text = {}
+        print('Content-Type is not text/html', ct," - ", url) 
+        text["type"] = ct
+        text["text"] = "1001"
+    #else:
+    #    print('Could not download:', url)
+    #
         #text = {}
 #         except Exception as e:
 #             raise e
@@ -323,13 +344,36 @@ def getWebpageText(url, r = ""):
     #webpagesText.append(text)
 #return webpagesText
     return text
+    
+## If needed
+def platformDetector():
+    if platform.win32_ver()[0]:
+        return "windows"
+    elif platform.mac_ver()[0]:
+        return "macintosh"
+    #elif "ANDROID_PRIVATE" in os.environ:
+    #    return "android"
+    # missing: os.condition
+    else:
+        return "linux"
 
+def statusCodeWriter(st_code, url, ct = ""):
+    ts = str(time.time())
+    theKey = url+"-"+ts
+    print('Could not download:', url, " status code: ", st_code)
+    newline_list = [theKey] + [""]*len(metadata_c) + [""]*(len(webpage_c)-2) + [ct] + [st_code] + [""]*len(cleanwebpage_c)
+    newline = "\t".join(newline_list)+"\n"
+    sumf.write(newline.encode('utf8'))
+    print('-----------')
+    
+    
 """
 main function
 """
 if __name__ == "__main__":
 
-    outpath = "output/"
+    outpath = config.OUTPATH
+    outfn = config.OUTFN
     
     col_event = config.COL_EVENT
     col_id = config.COL_ID[col_event]
@@ -337,6 +381,8 @@ if __name__ == "__main__":
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.0; WOW64; rv:24.0) Gecko/20100101 Firefox/24.0'}
     
     stopwordsList = stopwords.words('english')
+    
+    pltfrm = platformDetector()
 
 
     """
@@ -344,32 +390,15 @@ if __name__ == "__main__":
     webpage_f = outpath+"cmwf17test_webpage.tsv"
     cleanwebpage_f = outpath+"cmwf17test_cleanwebpage.tsv"
     """
-    output_f = outpath+"cmwf17test.tsv"
+    output_f = outpath+outfn
     
     metadata_c = ["doc-type", "collectoion-id", "collection-name"]
-    webpage_c = ["url", "html", "language", "title", "author/publisher","organization-name", "create-time", "domain-name" , "domain-location", "sub-urls", "fetch-time"]
+    webpage_c = ["url", "html", "language", "title", "author/publisher","organization-name", "create-time", "domain-name" , "domain-location", "sub-urls", "fetch-time", "mime-type", "status-code"]
     cleanwebpage_c = ["clean-text", "clean-text-profanity", "keywords", "tokens", "lemmatized","POS", "sner-people", "sner-organization", "sner-location", "real-world-events"]
     
     output_c = ["url-timestamp"] + metadata_c + webpage_c + cleanwebpage_c 
 
-    """
-    if not os.path.isfile(metadata_f):
-        with open(metadata_f, "w") as sumf:
-            sumf.write("\t".join(metadata_c)+"\n")
-            
-    if not os.path.isfile(webpage_f):
-        with open(webpage_f, "w") as sumf:
-            sumf.write("\t".join(webpage_c)+"\n")
-            
-    if not os.path.isfile(cleanwebpage_f):
-        with open(cleanwebpage_f, "w") as sumf:
-            sumf.write("\t".join(cleanwebpage_c)+"\n")
-        #print("New tsv file! ")    
 
-    sumf_metadata = open(metadata_f, "ab")
-    sumf_webpage = open(webpage_f, "ab")       
-    sumf_cleanwebpage = open(cleanwebpage_f, "ab")
-    """
     if not os.path.isfile(output_f):
         with open(output_f, "w") as sumf:
             sumf.write("\t".join(output_c)+"\n")
@@ -383,120 +412,147 @@ if __name__ == "__main__":
         for url in f:
             url = url.replace("\n","")
             print(url)
-            try:
-                content = requests.get(url.strip(),timeout=10,verify=False,headers=headers) 
-                ts = str(time.time())
-            except:
-                content ='' 
-                print('Could not download:', url)
+            if url.endswith(".jpg"):
+                st_code = "1000"
+                ct = "image/jpg"
+                statusCodeWriter(st_code, url, ct)
                 continue
             try:
-                ## Type: dict
-                ## dict keys: html, title, text
-                webdict = getWebpageText(url, content)
-                if not webdict:
-                    print('No Text to be extracted from: ', url)
+                r = requests.get(url.strip(),timeout=10,verify=False,headers=headers) 
+                ## If the status code is 4XX or 5XX
+                if r.status_code != requests.codes.ok:
+                    st_code = "0"+str(r.status_code)
+                    statusCodeWriter(st_code, url)  
                     continue
-                webhtml = webdict['html']
-                webtext = webdict['text']
-                webtitle = webdict['title']
-                webhtml_parsed = BeautifulSoup(webhtml, 'lxml' )
-                print("Title: "+webtitle)
-                
-                ## Tokenization and remove stopwords
-                webtokens = getTokens(webtext)
-                ## POS
-                webPOS = getPOS(webtokens)
-                ## Stemming and lemmatization
-                weblemma = getLemmatized(webtokens)
-                ## NERs
-                nerDict = getNERs(webtokens)
-                nerPerson = ",".join(nerDict['person'])
-                nerOrg = ",".join(nerDict['org'])
-                nerLocation = ",".join(nerDict['location'])
-                ## list to string
-                webtokens = ",".join(webtokens)
-                weblemma = ",".join(weblemma)
-                webPOS = ",".join(webPOS)
-                
-                ## Extract domain_name and domain_location
-                ## We might need some mapping to get valid domain location
-                parsed_uri = urlparse(url)
-                domain_name = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
-                domain_location = domain_name.split('.')[-1][:-1]
-                invalid_domains = ["com","net","edu","org"]
-                if domain_location in invalid_domains:
-                    domain_location = ""
-        
-                
-                ## Return extracted information from meta name
-                metadict = extractMetaName(webhtml_parsed)
-                
-                webAuthor = metadict['author']
-                webOrganization = metadict['copyright']
-                webCreatedate = metadict['publishDate']
-                webKeywords = metadict['keywords']
-                
-                ## Return list of sub URLs
-                sub_urls = getSubURL(webhtml_parsed)
-                sub_urls = ";".join(sub_urls)
-                
-                ## Returns a language list with prob
-                ## ['en:0.9999974122572912']
-                lan = [str(i) for i in detect_langs(webtext)]
-                lan = ",".join(lan)
-                
-                ## A few cleaning
-                webtext = webtext.replace("\n",".")
-                webtext = webtext.replace("\r",".")
-                webtext = webtext.replace("\t",".")
-                
-                webhtml = webhtml.decode('utf-8')
-                webhtml = webhtml.replace("\n",".")
-                webhtml = webhtml.replace("\r",".")
-                webhtml = webhtml.replace("\t",".")
-                
-                url = url.replace("\n","")
-                url = url.replace("\r","")
-                url = url.replace("\t","")
-                
-                webtitle = webtitle.replace("\n",".")
-                webtitle = webtitle.replace("\r",".")
-                webtitle = webtitle.replace("\t",".")
-                
-                ## clean-text-profanity
-                webtext_profanity = cleanTextProfanity(webtext)
-                
-
-                ## Our key: URL+timestamp
-                theKey = url+"-"+ts
-                
-                ## Write tsv files
-                """
-                newline_list = [theKey,"webpage"]
-                newline = "\t".join(newline_list)+"\n"
-                sumf_metadata.write(newline.encode('utf8'))
-                
-                newline_list = [theKey, url, webhtml, lan, webtitle, webAuthor, webOrganization, webCreatedate, domain_name, domain_location, sub_urls, ts]
-                newline = "\t".join(newline_list)+"\n"
-                sumf_webpage.write(newline.encode('utf8'))
-                
-                newline_list = [theKey, webtext, webtext_profanity, webKeywords]
-                newline = "\t".join(newline_list)+"\n"
-                sumf_cleanwebpage.write(newline.encode('utf8'))
-                """
-                
-                newline_list = [theKey]
-                
-                newline_m = ["webpage", col_id, col_event]
-                newline_w = [url, webhtml, lan, webtitle, webAuthor, webOrganization, webCreatedate, domain_name, domain_location, sub_urls, ts]
-                newline_c = [webtext, webtext_profanity, webKeywords, webtokens, weblemma, webPOS, nerPerson, nerOrg, nerLocation, col_event]
-                
-                newline_list += newline_m + newline_w + newline_c
-                
-                newline = "\t".join(newline_list)+"\n"
-                sumf.write(newline.encode('utf8'))
-                
+                ts = str(time.time())
+                st_code = "0"+str(r.status_code)
             except Exception as e:
+                ## If there is not even a status code
                 print(e)
+                st_code = "2001"
+                statusCodeWriter(st_code, url)
+                continue
+
+            
+            #try:
+            ## Type: dict
+            ## dict keys: html, title, text
+            webdict = getWebpageText(url, r)
+            webtype = webdict['type']
+            if webdict['text'] in ["1001","2000","2001"]:
+                st_code = webdict['text']
+                statusCodeWriter(st_code, url, webtype)
+                continue
+            webhtml = webdict['html']
+            webtext = webdict['text']
+            webtitle = webdict['title']
+            webhtml_parsed = BeautifulSoup(webhtml, 'lxml' )
+            print("Title: "+webtitle)
+            
+            ## Tokenization and remove stopwords
+            webtokens = getTokens(webtext)
+            ## POS, this is tricky when encode = utf8
+            try:
+                webPOS = getPOS(webtokens)
+            except:
+                webPOS = [""]
+            ## Stemming and lemmatization
+            weblemma = getLemmatized(webtokens)
+            ## NERs
+            nerDict = getNERs(webtokens, pltfrm)
+            nerPerson = ",".join(nerDict['person'])
+            nerOrg = ",".join(nerDict['org'])
+            nerLocation = ",".join(nerDict['location'])
+            ## list to string
+            webtokens = ",".join(webtokens)
+            weblemma = ",".join(weblemma)
+            webPOS = ",".join(webPOS)
+            
+            ## Extract domain_name and domain_location
+            ## We might need some mapping to get valid domain location
+            parsed_uri = urlparse(url)
+            domain_name = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
+            domain_location = domain_name.split('.')[-1][:-1]
+            invalid_domains = ["com","net","edu","org"]
+            if domain_location in invalid_domains:
+                domain_location = ""
+    
+            
+            ## Return extracted information from meta name
+            ## If there is a original URL
+            metadict = extractMetaName(webhtml_parsed, url)
+            url = metadict['url']
+            
+            webAuthor = metadict['author']
+            webOrganization = metadict['copyright']
+            webCreatedate = metadict['publishDate']
+            webKeywords = metadict['keywords']
+            
+            ## Return list of sub URLs
+            sub_urls = getSubURL(webhtml_parsed)
+            sub_urls = ";".join(sub_urls)
+            
+            ## Returns a language list with prob
+            ## ['en:0.9999974122572912']
+            try:
+                lan = [str(i) for i in detect_langs(webtext)]
+            except:
+                lan = [""]
+            lan = ",".join(lan)
+            
+            ## A few cleaning
+            webtext = webtext.replace("\n",".")
+            webtext = webtext.replace("\r",".")
+            webtext = webtext.replace("\t",".")
+            
+            webhtml = webhtml.decode('utf-8')
+            webhtml = webhtml.replace("\n",".")
+            webhtml = webhtml.replace("\r",".")
+            webhtml = webhtml.replace("\t",".")
+            
+            url = url.replace("\n","")
+            url = url.replace("\r","")
+            url = url.replace("\t","")
+            
+            webtitle = webtitle.replace("\n",".")
+            webtitle = webtitle.replace("\r",".")
+            webtitle = webtitle.replace("\t",".")
+            
+            ## clean-text-profanity
+            webtext_profanity = cleanTextProfanity(webtext)
+            
+
+            ## Our key: URL+timestamp
+            theKey = url+"-"+ts
+            
+            ## Write tsv files
+            """
+            newline_list = [theKey,"webpage"]
+            newline = "\t".join(newline_list)+"\n"
+            sumf_metadata.write(newline.encode('utf8'))
+            
+            newline_list = [theKey, url, webhtml, lan, webtitle, webAuthor, webOrganization, webCreatedate, domain_name, domain_location, sub_urls, ts]
+            newline = "\t".join(newline_list)+"\n"
+            sumf_webpage.write(newline.encode('utf8'))
+            
+            newline_list = [theKey, webtext, webtext_profanity, webKeywords]
+            newline = "\t".join(newline_list)+"\n"
+            sumf_cleanwebpage.write(newline.encode('utf8'))
+            """
+            
+            newline_list = [theKey]
+            
+            newline_m = ["webpage", col_id, col_event]
+            newline_w = [url, webhtml, lan, webtitle, webAuthor, webOrganization, webCreatedate, domain_name, domain_location, sub_urls, ts, webtype, st_code]
+            newline_c = [webtext, webtext_profanity, webKeywords, webtokens, weblemma, webPOS, nerPerson, nerOrg, nerLocation, col_event]
+            
+            newline_list += newline_m + newline_w + newline_c
+            
+            newline = "\t".join(newline_list)+"\n"
+            sumf.write(newline.encode('utf8'))
+            
+            #except Exception as e:
+            #    st_code = "2001"
+            #    statusCodeWriter(st_code, url)
+            #    print(e)
             print('-----------')
