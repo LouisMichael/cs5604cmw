@@ -70,6 +70,7 @@ webpage   organization-name
 webpage   fetch-time  [UnixTime]    
 webpage   mime-type [image/jpg, image/png, html/txt,...]    
 webpage  status-code [0200, 0404, 0502, 1001, 2001, ...]    
+
 *See the config file for our self-defined status codes*
 
 clean-webpage   clean-text   
@@ -83,6 +84,7 @@ clean-webpage   sner-organization
 clean-webpage   sner-location  
 clean-webpage  POS   
 clean-webpage  keywords [keywords in meta tags, could be inaccurate]   
+
 *These features starting from "tokens" are supported by library: nltk    
 stopwords are the default english stopwords supported by nltk. To handle relative high frequency of word "profanity" in clean-text-profanity, "profanity" is added to our stopwords list. *
 
