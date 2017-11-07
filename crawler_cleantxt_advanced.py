@@ -172,17 +172,17 @@ def extractMetaName(parsedHTML, url):
     for meta in parsedHTML.find_all("meta"):
         metaName = meta.get('name', '').lower()     
         ## author
-        if 'author' == metaName:
+        if 'author' == metaName and ('content' in meta):
             metas['author'] = meta['content'].strip()
             
         ## copyright
-        if 'copyright' == metaName:
+        if 'copyright' == metaName and ('content' in meta):
             metas['copyright'] = meta['content'].strip()
             
-        if 'keywords' == metaName:
+        if 'keywords' == metaName and ('content' in meta):
             metas['keywords'] = meta['content'].strip()
             
-        if "og:url" == metaName:
+        if "og:url" == metaName and ('content' in meta):
             metas['url'] = meta['content'].strip()
                         
             
@@ -231,7 +231,7 @@ def extractMetaName(parsedHTML, url):
         #<meta itemprop="datecreated" content="2015-11-26T11:53:00.000Z" />
         #<meta http-equiv="data" content="10:27:15 AM Thursday, November 26, 2015">
 
-        if any(conditions):
+        if any(conditions) and ('content' in meta):
             metas['publishDate'] = meta['content'].strip()
             
 
