@@ -44,13 +44,13 @@ In order to put output information
 
 making a table in HBase
 
-### Current crawler_cleantext_advanced.py 11/06/17
+### Current crawler_cleantext_advanced.py 11/07/17
 
 ##### Usage:
 $ python crawler_cleantxt.py <inputURLFile>
 
-Always remember to **change the config file** when crawling a new file. 
-Especially the COL_EVENT which represents the collection-name.
+Always remember to **change the config file** when crawling a new file.   
+Especially the **COL_EVENT** which represents the collection-name.
 
 ##### Supported:
 metadata   doc-type  
@@ -83,8 +83,8 @@ clean-webpage   sner-organization
 clean-webpage   sner-location  
 clean-webpage  POS   
 clean-webpage  keywords [keywords in meta tags, could be inaccurate]   
-*These features starting from "tokens" are supported by library: nltk*  
-*stopwords are the default english stopwords supported by nltk. To handle relative high frequency of word "profanity" in clean-text-profanity, "profanity" is added to our stopwords list. *
+*These features starting from "tokens" are supported by library: nltk    
+stopwords are the default english stopwords supported by nltk. To handle relative high frequency of word "profanity" in clean-text-profanity, "profanity" is added to our stopwords list. *
 
 *Where to find collection-id:
 http://hadoop.dlib.vt.edu:81/twitter/
