@@ -422,7 +422,7 @@ if __name__ == "__main__":
             url = url.replace("\n","")
             print(url)
             if url.endswith(".jpg"):
-                st_code = "1000"
+                st_code = "1001"
                 ct = "image/jpg"
                 statusCodeWriter(st_code, url, ct)
                 continue
