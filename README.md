@@ -46,6 +46,12 @@ making a table in HBase
 
 ### Current crawler_cleantext_advanced.py 11/06/17
 
+##### Usage:
+$ python crawler_cleantxt.py <inputURLFile>
+
+Always remember to **change the config file** when crawling a new file. 
+Especially the COL_EVENT which represents the collection-name.
+
 ##### Supported:
 metadata   doc-type  
 metadata   collection-id  
