@@ -44,7 +44,7 @@ In order to put output information
 
 making a table in HBase
 
-### Current crawler_cleantext.py 10/26/17
+### Current crawler_cleantext_advanced.py 11/06/17
 
 ##### Supported:
 metadata   doc-type  
@@ -53,7 +53,7 @@ metadata   collection-name
 
 webpage   html  
 webpage   language   [language:confidence, language:confidence]   
-webpage   url  
+webpage   url  [og:url if exists]
 webpage   title  
 webpage   author/publisher  
 webpage   sub-urls   [url;url]  
@@ -62,30 +62,30 @@ webpage   domain-name
 webpage   domain-location  
 webpage   organization-name  
 webpage   fetch-time  [UnixTime]  
+webpage   mime-type [image/jpg, image/png, html/txt,...]
+webpage  status-code [0200, 0404, 0502, 1000, ...]
+*See the config file for our self-defined status codes*
 
 clean-webpage   clean-text   
 clean-webpage   clean-text-profanity  
 clean-webpage   real-world-events [same as collection-name for EFC URLs]
-
-*Where to find collection-id:
-http://hadoop.dlib.vt.edu:81/twitter/
-http://hadoop.dlib.vt.edu:82/twitter/*
-
-##### More Supported (crawler_cleantext_advanced.py): 
 clean-webpage  tokens [tokenized and stopwords removed]   
 clean-webpage  lemmatized    [stemmed and lemmatized using tokens]  
 clean-webpage   sner-people  
 clean-webpage   sner-organization  
 clean-webpage   sner-location  
 clean-webpage  POS   
-*These features are supported by library: nltk*  
+*These features starting from "tokens" are supported by library: nltk*  
 
+*Where to find collection-id:
+http://hadoop.dlib.vt.edu:81/twitter/
+http://hadoop.dlib.vt.edu:82/twitter/*
 
 ##### To be updated if needed:
 webpage   domain-location   
 *Use GeoIP to generate a bounding box at country level   
 Or recognize the location of copyright organization   
-Or we will leave locations in sner-location to be processed*
+For now, we leave locations in sner-location to be processed*
 
 ### Current write to hbase bash command
 hbase org.apache.hadoop.hbase.mapreduce.ImportTsv -Dimporttsv.separator='   ' -Dimporttsv.columns="HBASE_ROW_KEY,metadata:doc-type,webpage:url,webpage:html,webpage:language,webpage:title,webpage:author/publisher,webpage:organization-name,webpage:create-time,webpage:domain-name,webpage:domain-location,webpage:sub-urls,webpage:fetch-time,cleanwebpage:clean-text,cleanwebpage:clean-text-profanity,cleanwebpage:keywords,cleanwebpage:tokens,cleanwebpage:lemmatized,cleanwebpage:POS,cleanwebpage:sner-people,cleanwebpage:sner-organization,cleanwebpage:sner-location" table_name cmwf17test.tsv
