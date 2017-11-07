@@ -69,15 +69,15 @@ webpage   domain-location
 webpage   organization-name  
 webpage   fetch-time  [UnixTime]    
 webpage   mime-type [image/jpg, image/png, html/txt,...]    
-webpage  status-code [0200, 0404, 0502, 1000, ...]    
+webpage  status-code [0200, 0404, 0502, 1001, 2001, ...]    
 *See the config file for our self-defined status codes*
 
 clean-webpage   clean-text   
 clean-webpage   clean-text-profanity  
 clean-webpage   real-world-events [same as collection-name for EFC URLs]   
-clean-webpage  tokens [tokenized and stopwords removed without profanity] 
-clean-webpage stemmed [stemmed using tokens]   
-clean-webpage  lemmatized  [lemmatized using tokens]  
+clean-webpage  tokens [tokenized and stopwords removed without profanity]   
+clean-webpage stemmed [stemmed using tokens]     
+clean-webpage  lemmatized  [lemmatized using tokens]     
 clean-webpage   sner-people  
 clean-webpage   sner-organization  
 clean-webpage   sner-location  
