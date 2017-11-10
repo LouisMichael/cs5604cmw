@@ -76,7 +76,7 @@ webpage  status-code [0200, 0404, 0502, 1001, 2001, ...]
 clean-webpage   clean-text   
 clean-webpage   clean-text-profanity  
 clean-webpage   real-world-events [same as collection-name for EFC URLs]   
-clean-webpage  tokens [tokenized and stopwords removed tokens based on clean-text-profanity]   
+clean-webpage  tokens [stopwords removed tokens based on clean-text-profanity]   
 clean-webpage stemmed [stemmed tokens]     
 clean-webpage  lemmatized  [lemmatized tokens]     
 clean-webpage   sner-people  
