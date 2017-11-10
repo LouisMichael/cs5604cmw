@@ -44,7 +44,7 @@ In order to put output information
 
 making a table in HBase
 
-### Current crawler_cleantext_advanced.py 11/07/17
+### Current crawler_cleantxt_advanced.py 11/07/17
 
 ##### Usage:
 $ python crawler_cleantxt.py <inputURLFile>
