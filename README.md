@@ -52,29 +52,32 @@ $ python crawler_cleantxt_advanced.py <inputURLFile>
 Always remember to **change the config file** when crawling a new file.   
 Especially the **COL_EVENT** which represents the collection-name.
 
-Put following files in the same directory:
-* crawler_cleantxt_config.py
-* profanity_en.txt
-* nerClassifier
-* stanford-ner-2017-06-09
+Put following files in the same directory:  
+* crawler_cleantxt_config.py  
+* profanity_en.txt  
+* nerClassifier  
+* stanford-ner-2017-06-09  
 
 ##### Use together with EFC:
-As mentioned before, put following dependencies in the same directory:
-* crawler_cleantxt_advanced.py
-* crawler_cleantxt_config.py
-* profanity_en.txt
-* nerClassifier
-* stanford-ner-2017-06-09
+As mentioned before, put following dependencies in the same directory:  
+* crawler_cleantxt_advanced.py  
+* crawler_cleantxt_config.py  
+* profanity_en.txt  
+* nerClassifier  
+* stanford-ner-2017-06-09  
 
-Add one line in EFC/utils:
+Add one line in EFC/utils:  
 `import crawler_cleantxt_advanced as cln`
 
-Change one line in EFC/utils.getWebpageText()
-`r = requests.get(url.strip(),timeout=10,verify=False,headers=headers)`
-to:
-`r = cln.main(url, efc = True)`
+Change one line in EFC/utils.getWebpageText()  
+`r = requests.get(url.strip(),timeout=10,verify=False,headers=headers)`  
+to:  
+`r = cln.main(url, efc = True)`  
 
-The integrated version is under folder EFC_with_cleaning
+The integrated version is under folder EFC_with_cleaning.   
+
+Usage:  
+$python FocusedCrawler.py b model.txt seed.txt
 
 ##### Supported:
 metadata   doc-type  
