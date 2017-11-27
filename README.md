@@ -128,6 +128,11 @@ For now, we leave locations in sner-location to be processed*
 ### Current write to hbase bash command
 hbase org.apache.hadoop.hbase.mapreduce.ImportTsv -Dimporttsv.separator='   ' -Dimporttsv.columns="HBASE_ROW_KEY,metadata:doc-type,webpage:url,webpage:html,webpage:language,webpage:title,webpage:author/publisher,webpage:organization-name,webpage:create-time,webpage:domain-name,webpage:domain-location,webpage:sub-urls,webpage:fetch-time,cleanwebpage:clean-text,cleanwebpage:clean-text-profanity,cleanwebpage:keywords,cleanwebpage:tokens,cleanwebpage:lemmatized,cleanwebpage:POS,cleanwebpage:sner-people,cleanwebpage:sner-organization,cleanwebpage:sner-location" table_name cmwf17test.tsv
 
+New Command used to combine old tables into full big table
+
+hbase org.apache.hadoop.hbase.mapreduce.ImportTsv -Dimporttsv.separator=' ' -Dimporttsv.columns="HBASE_ROW_KEY,metadata:doc-type,webpage:url,webpage:html,webpage:language,webpage:title,webpage:author/publisher,webpage:organization-name,webpage:create-time,webpage:domain-name,webpage:domain-location,webpage:sub-urls,webpage:fetch-time,clean-webpage:clean-text,clean-webpage:clean-text-profanity,clean-webpage:keywords,clean-webpage:tokens,clean-webpage:lemmatized,clean-webpage:POS,clean-webpage:sner-people,clean-webpage:sner-organization,clean-webpage:sner-location,metadata:collection-name,clean-webpage:real-world-events,metadata:collection-id" getar-cs5604f17 full.tsv
+
+
 ### Helpful Scan command
 scan "getar-cs5604f17", { FILTER => SingleColumnValueFilter.new(Bytes.toBytes('metadata'),Bytes.toBytes('doc-type'), CompareFilter::CompareOp.valueOf('EQUAL'),BinaryComparator.new(Bytes.toBytes('webpage')))}
 
