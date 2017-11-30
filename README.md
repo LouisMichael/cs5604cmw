@@ -140,3 +140,5 @@ This will output all rows from metadata that are of doc-type webpage
 
 ### Java Classpath compile for the cluster
 javac -cp "/opt/cloudera/parcels/CDH-5.12.0-1.cdh5.12.0.p0.29/jars/hadoop-common-2.6.0-cdh5.12.0.jar:/opt/cloudera/parcels/CDH-5.12.0-1.cdh5.12.0.p0.29/jars/hbase-common-1.2.0-cdh5.12.0.jar" testJavaFetch.java 
+
+javac -cp "/opt/cloudera/parcels/CDH-5.12.0-1.cdh5.12.0.p0.29/jars/hadoop-common-2.6.0-cdh5.12.0.jar:/opt/cloudera/parcels/CDH-5.12.0-1.cdh5.12.0.p0.29/jars/hbase-common-1.2.0-cdh5.12.0.jar:/opt/cloudera/parcels/CDH-5.12.0-1.cdh5.12.0.p0.29/jars/hbase-client-1.2.0-cdh5.12.0.jar" RetriveData.java 
