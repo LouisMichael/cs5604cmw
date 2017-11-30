@@ -567,20 +567,21 @@ def main(url, efc = False):
         
         newline = "\t".join(newline_list)+"\n"
         sumf.write(newline.encode('utf8'))
-        if efc:
-            return r
+        return r
         
     except Exception as e:
         st_code = "2001"
         statusCodeWriter(st_code, url)
         print(e)
-    print('-----------')
+        return ""
     
+    return ""
 
 
 if __name__ == "__main__":
     with open(sys.argv[1]) as f:
         for url in f:
             url = url.replace("\n","")
+            print('-----------')
             print(url)
             main(url)
