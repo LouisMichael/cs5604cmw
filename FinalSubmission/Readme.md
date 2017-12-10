@@ -54,8 +54,8 @@ Put following files in the same directory:
 * profanity_en.txt  
 * stanford-ner
 
-*We inherited profanity_en.txt from 2016's class
-*The standford-ner can be downloaded from: https://nlp.stanford.edu/software/CRF-NER.html
+*We inherited profanity_en.txt from 2016's class*  
+*The standford-ner can be downloaded from: https://nlp.stanford.edu/software/CRF-NER.html*  
 
 #### Use together with EFC:
 As mentioned before, put following dependencies in the same directory:  
