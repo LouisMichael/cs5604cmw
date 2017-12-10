@@ -46,6 +46,11 @@ $ PYSPARK_PYTHON=/opt/cloudera/parcels/Anaconda/bin/python spark-submit crawler_
 #### Config file:   
 crawler_cleantxt_config_twitter.py
 
+### 5. crawler_cleantxt_advanced.py   
+Only used to be intergrated in EFC. See the details in the following section. 
+
+### 6. nerphrase.py   
+NER dectection function to perform "next to each other stratege": if two neighbour words have the same detected NER property, they will be put together as one phrase. 
 
 ## Details about crawler_cleantxt_\*.py 
 
