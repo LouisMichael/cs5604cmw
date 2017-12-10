@@ -3,7 +3,7 @@
 
 ## File overview:
 
-### crawler_cleantxt_advanced_alone.py  
+### 1. crawler_cleantxt_advanced_alone.py  
 Crawler + cleaner without PySpark.   
 #### Input:   
 A single .txt file, list of URLs  
@@ -17,31 +17,31 @@ Always remember to **change the config file** when crawling a new file.
 Especially the **COL_EVENT** which represents the collection-name.
 
 
-### crawler_cleantxt_stem_spark.py   
+### 2. crawler_cleantxt_stem_spark.py   
 Parallel stemming using PySpark.  
 #### Input:    
 A single .txt file, list of URLs    
-#### Usage:    
+#### Usage on cluster:    
 $ PYSPARK_PYTHON=/opt/cloudera/parcels/Anaconda/bin/python spark-submit crawler_cleantxt_stem_spark.py <inputURLFile>
 #### Config file:   
 crawler_cleantxt_config.py  
 
 
-### crawler_cleantxt_crawl_spark.py   
+### 3. crawler_cleantxt_crawl_spark.py   
 Parallel crawling using PySpark.  
 #### Input:    
 A single .txt file, list of URLs    
-#### Usage:    
+#### Usage on cluster:    
 $ PYSPARK_PYTHON=/opt/cloudera/parcels/Anaconda/bin/python spark-submit crawler_cleantxt_crawl_spark.py <inputURLFile>
 #### Config file:   
 crawler_cleantxt_config.py  
 
 
-### crawler_cleantxt_crawl_spark_twitter_list.py   
+### 4. crawler_cleantxt_crawl_spark_twitter_list.py   
 Parallel crawling using PySpark for Twitter collections.  
 #### Input:    
 .csv tweet collection files fetched from HBase. **No need** to perform dupliction elimination beforehand.  
-#### Usage:    
+#### Usage on cluster:    
 $ PYSPARK_PYTHON=/opt/cloudera/parcels/Anaconda/bin/python spark-submit crawler_cleantxt_crawl_spark_twitter_list.py <inputURLFile>
 #### Config file:   
 crawler_cleantxt_config_twitter.py
